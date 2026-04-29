@@ -6,18 +6,15 @@ def check_env():
     print("--- Verificación de Entorno ---")
     print(f"Versión de PyTorch: {torch.__version__}")
     
-    if torch.cuda.is_available():
-        print(f"GPU detectada: {torch.cuda.get_device_name(0)}")
-        # Prueba simple de tensor en GPU
-        x = torch.tensor([1.0, 2.0]).to("cuda")
-        print("Operación básica en GPU: Exitosa")
-    else:
-        print("ERROR: No se detectó GPU. Triton requiere una GPU NVIDIA.")
+    # Tomamos una imagen de prueba (ej. un '7')
+    
 
-    try:
-        print(f"Versión de Triton: {triton.__version__}")
-    except:
-        print("ERROR: Triton no está correctamente instalado.")
+    # Pasamos la imagen por tu modelo Triton
+    prediccion = modelo_custom(imagen_test)
+
+# Obtenemos el número con mayor probabilidad
+clase_predicha = torch.argmax(prediccion, dim=1)
+print(f"El modelo Triton dice que el número es: {clase_predicha.item()}")
 
 if __name__ == "__main__":
     check_env()

@@ -1,0 +1,14 @@
+# Núcleo de Computación y Deep Learning
+torch
+torchvision
+
+# Kernels de GPU de alto rendimiento
+triton
+
+# Procesamiento de imágenes y visualización
+opencv-python
+numpy
+
+# Utilidades (opcional, para benchmarks)
+matplotlib
+pandas

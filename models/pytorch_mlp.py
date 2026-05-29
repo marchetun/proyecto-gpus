@@ -11,16 +11,16 @@ class VanillaMLP(nn.Module):
         
     def forward(self, x):
         # x llega como [batch_size, 1, 28, 28] desde el DataLoader
-        # 1. Aplanamos la imagen: de (28,28) a (784,)
+        # Aplanamos la imagen: de (28,28) a (784,)
         x = x.view(x.size(0), -1) 
         
-        # 2. Primera capa: x * W1 + b1
+        # Primera capa: x * W1 + b1
         x = self.fc1(x)
         
-        # 3. Activación: max(0, x)
+        # Activación: max(0, x)
         x = self.relu(x)
         
-        # 4. Segunda capa: x * W2 + b2
+        # Segunda capa: x * W2 + b2
         x = self.fc2(x)
         
         return x

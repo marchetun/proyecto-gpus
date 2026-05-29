@@ -1,7 +1,6 @@
 import torch
 import triton
 import triton.language as tl
-#Sacada de -> https://openai.com/index/triton/
 @triton.jit
 def matmul_kernel(
     A, B, C, Bias, 

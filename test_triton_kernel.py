@@ -37,7 +37,7 @@ def simple_matmul_test(
 def test_matmul():
     device = torch.device("cuda")
     
-    # Test case: 32x32 @ 32x32 = 32x32 (grandes suficientes para Triton)
+    # Test case: 32x32 Y 32x32 = 32x32 (grandes suficientes para Triton, creo)
     torch.manual_seed(42)
     A = torch.randn(32, 32, device=device, dtype=torch.float32)
     B = torch.randn(32, 32, device=device, dtype=torch.float32)

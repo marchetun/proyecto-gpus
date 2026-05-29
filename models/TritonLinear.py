@@ -16,6 +16,4 @@ class TritonLinear(nn.Module):
             self.register_parameter('bias', None)
 
     def forward(self, x):
-        # Aquí usamos tu función que lanza el kernel de Triton
-        # Nota: x es [Batch, In], weight es [In, Out], bias es [Out]
         return triton_matmul(x, self.weight, self.bias, activation=self.activation)

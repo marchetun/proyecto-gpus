@@ -10,7 +10,7 @@ def test_matmul_with_bias_activation():
     w = torch.randn(784, 128, device=device, dtype=torch.float32)
     b = torch.randn(128, device=device, dtype=torch.float32)
     
-    # PyTorch (usando nn.Linear internamente)
+    # PyTorch
     linear = torch.nn.Linear(784, 128, device=device, dtype=torch.float32)
     with torch.no_grad():
         linear.weight.copy_(w.t())

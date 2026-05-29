@@ -1,7 +1,7 @@
 import torch
 from .TritonLinear import TritonLinear
 
-# 1. Definir la arquitectura usando tus capas de Triton
+# Definir la arquitectura usando Triton
 class MNISTModelTriton(torch.nn.Module):
     def __init__(self):
         super(MNISTModelTriton, self).__init__()

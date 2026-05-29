@@ -6,20 +6,20 @@ from utils.data_loader import MNISTNumpyDataset
 from torch.utils.data import DataLoader
 
 def train_model():
-    # 1. Configuración de hardware
+    # Configuración de hardware
     # Triton requiere CUDA, así que forzamos la comprobación
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     if device.type != 'cuda':
         print("ADVERTENCIA: No se detectó GPU. Triton no funcionará más adelante.")
     print(f"Ejecutando en: {device}")
 
-    # 2. Hiperparámetros
+    # Hiperparámetros
     BATCH_SIZE = 64
     EPOCHS = 5
     LEARNING_RATE = 1e-3
 
-    # 3. Carga de datos (.npy de Kaggle)
-    # Asumiendo que bajaste los archivos a una carpeta llamada 'data'
+    # Carga de datos (.npy de Kaggle)
+    # LOS ARCHIVOS EN LA CARPERTA DATA
     try:
         train_ds = MNISTNumpyDataset(
             images_path='data/train_images.npy', 
@@ -36,12 +36,12 @@ def train_model():
     train_loader = DataLoader(train_ds, batch_size=BATCH_SIZE, shuffle=True, pin_memory=True)
     test_loader = DataLoader(test_ds, batch_size=BATCH_SIZE, shuffle=False, pin_memory=True)
 
-    # 4. Inicializar modelo, pérdida y optimizador
+    # Inicializar modelo, pérdida y optimizador
     model = VanillaMLP().to(device)
     criterion = nn.CrossEntropyLoss() # Maneja internamente el Softmax
     optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
-    # 5. Bucle Principal de Entrenamiento
+    # Bucle Principal de Entrenamiento
     print("Starting training...")
     for epoch in range(EPOCHS):
         model.train()
@@ -54,7 +54,7 @@ def train_model():
             # Limpiar gradientes
             optimizer.zero_grad()
             
-            # Forward pass: Aquí es donde más tarde entrará Triton
+            # Forward pass: despues entra triton
             outputs = model(images)
             
             # Calcular cuánto se equivocó la red

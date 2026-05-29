@@ -3,6 +3,8 @@ from models.MNISTModelTriton import MNISTModelTriton
 from models.pytorch_mlp import VanillaMLP
 from utils.data_loader import MNISTNumpyDataset
 
+
+# ESTO LO UTILIZAMOS PARA ENCONTRAR LOS FALLOS EN LA IMPLEMENTACION DEL KERNEL DE TRITON. 
 def debug_models():
     device = torch.device("cuda")
     

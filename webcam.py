@@ -6,12 +6,11 @@ from models.MNISTModelTriton import MNISTModelTriton
 def webcam_inference():
     device = torch.device("cuda")
     
-    # 1. Inicializar modelo y cargar pesos (Exactamente como en tu validate.py)
+    # Inicializar modelo y cargar pesos
     model = MNISTModelTriton().to(device)
     checkpoint = torch.load('mnist_model_weights.pth')
 
     with torch.no_grad():
-        # .t() para la forma [In, Out] y .contiguous() para el layout de Triton[cite: 5]
         model.fc1.weight.copy_(checkpoint['fc1.weight'].t().contiguous())
         model.fc1.bias.copy_(checkpoint['fc1.bias'].contiguous())
         model.fc2.weight.copy_(checkpoint['fc2.weight'].t().contiguous())
@@ -27,7 +26,7 @@ def webcam_inference():
         ret, frame = cap.read()
         if not ret: break
 
-        # 1. Definir la "Caja de Captura" (ROI - Region of Interest) central
+        # Definimos la regionde interes
         h, w, _ = frame.shape
         box_size = 300  # Tamaño del cuadrado central
         x1 = (w - box_size) // 2
@@ -35,36 +34,33 @@ def webcam_inference():
         x2 = x1 + box_size
         y2 = y1 + box_size
 
-        # Dibujar la caja azul en la pantalla para que sepas dónde apuntar
+        # Dibujar la caja azul en la pantalla para saber donde apuntar
         cv2.rectangle(frame, (x1, y1), (x2, y2), (255, 0, 0), 2)
         
         # Recortar solo lo que está dentro de la caja
         roi = frame[y1:y2, x1:x2]
 
-        # 2. Preprocesamiento Extremo (Para igualar a MNIST)
+        # Preprocesamiento Extremo (Para igualar a MNIST)
         gray = cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY)
         
         # Desenfocar ligeramente para quitar el ruido del papel
         gray = cv2.GaussianBlur(gray, (7, 7), 0)
 
-        # Thresholding: Convierte a Blanco y Negro puro, e invierte los colores a la vez
-        # THRESH_BINARY_INV hace que el papel blanco sea negro y la tinta negra sea blanca
+        # Convierte a Blanco y Negro puro, e invierte los colores a la vez
+        # el otro hace que el papel blanco sea negro y la tinta negra sea blanca
         _, thresh = cv2.threshold(gray, 100, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)
 
         # Redimensionar al tamaño final de MNIST
         resized = cv2.resize(thresh, (28, 28), interpolation=cv2.INTER_AREA)
 
-        # --- VENTANA DE DEBUG (Súper importante) ---
-        # Mostramos la imagen de 28x28 ampliada para que veas qué procesa el kernel
+        # Mostramos la imagen de 28x28 ampliada para ver que pilla el kernel
         cv2.imshow('Ojos de la IA (28x28 Ampliado)', cv2.resize(resized, (200, 200)))
 
-        # 3. Preparar el Tensor
-        # NOTA: Vuelvo a poner el / 255.0. Aunque los datos vengan "normalizados" de NumPy, 
-        # OpenCV te da valores de 0 a 255. Si tu modelo espera 0 a 1, esto es OBLIGATORIO.
+        # Preparar el Tensor
         images = torch.from_numpy(resized).to(device).to(torch.float32)
         images = (images / 255.0).view(-1, 784).contiguous()
 
-        # 4. Inferencia con Triton
+        # Inferencia con Triton
         with torch.no_grad():
             outputs = model(images)
             _, predicted = torch.max(outputs.data, 1)

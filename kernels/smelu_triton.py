@@ -6,7 +6,7 @@ import torch.nn as nn
 import triton
 import triton.language as tl
 
-#Sacada de github -> ChristophReich1996 
+#Sacada de github -> ChristophReich1996
 @triton.jit
 def _smelu_kernel_forward(
         input_pointer,

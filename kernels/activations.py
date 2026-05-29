@@ -17,15 +17,15 @@ def relu_kernel(#El compilador lo expande a nivel de hilo
     tl.store(y_ptr + offsets, output, mask=mask)
 
 def triton_relu(x: torch.Tensor):
-    # 1. Preparar el tensor de salida en la misma GPU que x
+    # Preparar el tensor de salida en la misma GPU que x
     y = torch.empty_like(x)
     n_elements = x.numel()
     
-    # 2. Definir el Grid
+    # Definir el Grid
     # Queremos suficientes programas para cubrir todos los elementos
     grid = lambda meta: (triton.cdiv(n_elements, meta['BLOCK_SIZE']),)#división hacia arriba
     
-    # 3. Lanzar el kernel
+    # Lanzar el kernel
     relu_kernel[grid](
         x, y, n_elements, 
         BLOCK_SIZE=1024

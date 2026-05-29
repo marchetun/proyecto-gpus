@@ -6,8 +6,7 @@ from utils.data_loader import MNISTNumpyDataset # Usamos el que ya tienes
 def validate_all_images():
     device = torch.device("cuda")
     
-    # 1. Cargar el dataset completo de test
-    # El MNISTNumpyDataset es el que definiste en train.py
+    # Cargar el dataset completo de test
     test_ds = MNISTNumpyDataset(
         images_path='data/test_images.npy', 
         labels_path='data/test_labels.npy'
@@ -19,8 +18,6 @@ def validate_all_images():
     checkpoint = torch.load('mnist_model_weights.pth')
 
     with torch.no_grad():
-        # .t() para cambiar la forma a [In, Out]
-        # .contiguous() para que los strides en memoria sean 100% lineales
         model.fc1.weight.copy_(checkpoint['fc1.weight'].t().contiguous())
         model.fc1.bias.copy_(checkpoint['fc1.bias'].contiguous())
         model.fc2.weight.copy_(checkpoint['fc2.weight'].t().contiguous())
@@ -28,7 +25,7 @@ def validate_all_images():
     
     model.eval()
 
-    # 4. Bucle de Inferencia sobre TODO el dataset
+    # Bucle de Inferencia sobre todo el dataset
     correct = 0
     total = 0
     print(f"Iniciando inferencia en {len(test_ds)} imágenes...")
@@ -40,7 +37,7 @@ def validate_all_images():
             labels = labels.to(device)
             # Los datos ya vienen normalizados del data_loader (entre 0 y 1)
             images = images.to(device).to(torch.float32).view(-1, 784).contiguous()
-            # Aquí se están disparando tus kernels fusionados de Triton
+            
             print(f"Shape: {images.shape}, Dtype: {images.dtype}, Contiguous: {images.is_contiguous()}")
             outputs = model(images)
             

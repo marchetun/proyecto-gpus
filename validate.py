@@ -1,7 +1,7 @@
 import torch
 from torch.utils.data import DataLoader
 from models.MNISTModelTriton import MNISTModelTriton
-from utils.data_loader import MNISTNumpyDataset # Usamos el que ya tienes
+from utils.data_loader import MNISTNumpyDataset
 
 def validate_all_images():
     device = torch.device("cuda")
@@ -37,7 +37,7 @@ def validate_all_images():
             labels = labels.to(device)
             # Los datos ya vienen normalizados del data_loader (entre 0 y 1)
             images = images.to(device).to(torch.float32).view(-1, 784).contiguous()
-            
+
             print(f"Shape: {images.shape}, Dtype: {images.dtype}, Contiguous: {images.is_contiguous()}")
             outputs = model(images)
             

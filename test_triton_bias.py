@@ -4,7 +4,7 @@ from kernels.matmulMod import triton_matmul
 def test_matmul_with_bias_activation():
     device = torch.device("cuda")
     
-    # Setup similar a MNIST: 1x784 @ 784x128 = 1x128 + bias (128,)
+    # Setup similar a MNIST
     torch.manual_seed(42)
     x = torch.randn(1, 784, device=device, dtype=torch.float32)
     w = torch.randn(784, 128, device=device, dtype=torch.float32)

@@ -5,7 +5,7 @@ from MNISTModelTriton import MNISTModelTriton
 from models.pytorch_mlp import VanillaMLP
 
 
-#NOTA : Este benchmark no llegamos a implementarlo en la presentación, pero lo dejo aquí. La idea es comparar la salida de ambos modelos (Triton vs PyTorch) y luego medir el tiempo de ejecución de cada uno en una imagen de prueba.
+# NOTA : Este benchmark no llegamos a implementarlo en la presentación, pero lo dejo aquí. La idea es comparar la salida de ambos modelos (Triton vs PyTorch) y luego medir el tiempo de ejecución de cada uno en una imagen de prueba.
 # NO estoy complentamente seguro si funciponará sin ajustes, pero la idea es esa. Si no funciona, al menos sirve como referencia de cómo podríamos hacer un benchmark más formal en el futuro.
 def run_test():
     device = 'cuda'

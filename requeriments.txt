@@ -1,8 +1,8 @@
-# Núcleo de Computación y Deep Learning
+# Deep Learning
 torch
 torchvision
 
-# Kernels de GPU de alto rendimiento
+# obviamente 
 triton
 
 # Procesamiento de imágenes y visualización
